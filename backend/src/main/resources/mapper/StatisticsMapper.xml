@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heritage.mapper.StatisticsMapper">
+
+    <select id="selectAllWithProvince" resultType="map">
+        SELECT 
+            p.id AS provinceId,
+            p.province_name AS provinceName,
+            p.longitude,
+            p.latitude,
+            COALESCE(h.totalCount, 0) AS totalCount,
+            COALESCE(h.nationalCount, 0) AS nationalCount,
+            COALESCE(h.provincialCount, 0) AS provincialCount
+        FROM province p
+        LEFT JOIN (
+            SELECT 
+                province_id,
+                COUNT(*) AS totalCount,
+                SUM(CASE WHEN level = '国家级' THEN 1 ELSE 0 END) AS nationalCount,
+                SUM(CASE WHEN level = '省级' THEN 1 ELSE 0 END) AS provincialCount
+            FROM heritage
+            GROUP BY province_id
+        ) h ON p.id = h.province_id
+        ORDER BY COALESCE(h.totalCount, 0) DESC
+    </select>
+
+    <select id="selectNationalStats" resultType="map">
+        SELECT 
+            COUNT(*) AS totalCount,
+            SUM(CASE WHEN level = '国家级' THEN 1 ELSE 0 END) AS nationalCount,
+            (SELECT COUNT(*) FROM inheritor) AS inheritorCount,
+            44 AS unescoCount
+        FROM heritage
+    </select>
+</mapper>

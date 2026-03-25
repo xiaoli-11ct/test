@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heritage.mapper.NewsMapper">
+
+    <select id="selectAllWithDetails" resultType="map">
+        SELECT 
+            id, title, content, category, 
+            publish_date AS publishDate, 
+            img_url AS imgUrl, 
+            create_time AS createTime 
+        FROM news ORDER BY publish_date DESC
+    </select>
+
+</mapper>
