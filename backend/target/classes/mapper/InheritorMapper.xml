@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heritage.mapper.InheritorMapper">
+
+    <select id="selectWithProvince" resultType="map">
+        SELECT 
+            i.id, i.name, i.gender, i.province_id AS provinceId, i.category_id AS categoryId,
+            i.level, i.birthday, i.intro, i.img_url AS imgUrl, 
+            i.create_time AS createTime,
+            p.province_name AS provinceName, c.name AS categoryName
+        FROM inheritor i
+        LEFT JOIN province p ON i.province_id = p.id
+        LEFT JOIN category c ON i.category_id = c.id
+        ORDER BY i.id
+    </select>
+
+    <select id="selectByProvinceId" resultType="map">
+        SELECT 
+            i.id, i.name, i.gender, i.province_id AS provinceId, i.category_id AS categoryId,
+            i.level, i.birthday, i.intro, i.img_url AS imgUrl, 
+            i.create_time AS createTime,
+            p.province_name AS provinceName, c.name AS categoryName
+        FROM inheritor i
+        LEFT JOIN province p ON i.province_id = p.id
+        LEFT JOIN category c ON i.category_id = c.id
+        WHERE i.province_id = #{provinceId}
+    </select>
+
+    <select id="selectTotalCount" resultType="long">
+        SELECT COUNT(*) FROM inheritor
+    </select>
+</mapper>

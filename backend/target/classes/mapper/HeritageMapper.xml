@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heritage.mapper.HeritageMapper">
+
+    <select id="selectWithProvince" resultType="map">
+        SELECT 
+            h.id, h.name, h.province_id AS provinceId, h.category_id AS categoryId,
+            h.level, h.intro, h.description, h.img_url AS imgUrl, h.video_url AS videoUrl,
+            h.declaration_year AS declarationYear, h.code, h.inheritor,
+            h.create_time AS createTime, h.update_time AS updateTime,
+            p.province_name AS provinceName, c.name AS categoryName, c.code AS categoryCode
+        FROM heritage h
+        LEFT JOIN province p ON h.province_id = p.id
+        LEFT JOIN category c ON h.category_id = c.id
+        ORDER BY h.id
+    </select>
+
+    <select id="selectByIdWithProvince" resultType="map">
+        SELECT 
+            h.id, h.name, h.province_id AS provinceId, h.category_id AS categoryId,
+            h.level, h.intro, h.description, h.img_url AS imgUrl, h.video_url AS videoUrl,
+            h.declaration_year AS declarationYear, h.code, h.inheritor,
+            h.create_time AS createTime, h.update_time AS updateTime,
+            p.province_name AS provinceName, c.name AS categoryName, c.code AS categoryCode
+        FROM heritage h
+        LEFT JOIN province p ON h.province_id = p.id
+        LEFT JOIN category c ON h.category_id = c.id
+        WHERE h.id = #{id}
+    </select>
+
+    <select id="selectByProvinceId" resultType="map">
+        SELECT 
+            h.id, h.name, h.province_id AS provinceId, h.category_id AS categoryId,
+            h.level, h.intro, h.description, h.img_url AS imgUrl, h.video_url AS videoUrl,
+            h.declaration_year AS declarationYear, h.code, h.inheritor, 
+            h.create_time AS createTime, h.update_time AS updateTime,
+            p.province_name AS provinceName, c.name AS categoryName
+        FROM heritage h
+        LEFT JOIN province p ON h.province_id = p.id
+        LEFT JOIN category c ON h.category_id = c.id
+        WHERE h.province_id = #{provinceId}
+    </select>
+
+    <select id="selectByCategoryId" resultType="map">
+        SELECT 
+            h.id, h.name, h.province_id AS provinceId, h.category_id AS categoryId,
+            h.level, h.intro, h.description, h.img_url AS imgUrl, h.video_url AS videoUrl,
+            h.declaration_year AS declarationYear, h.code, h.inheritor,
+            h.create_time AS createTime, h.update_time AS updateTime,
+            p.province_name AS provinceName, c.name AS categoryName
+        FROM heritage h
+        LEFT JOIN province p ON h.province_id = p.id
+        LEFT JOIN category c ON h.category_id = c.id
+        WHERE h.category_id = #{categoryId}
+    </select>
+
+    <select id="selectTotalCount" resultType="long">
+        SELECT COUNT(*) FROM heritage
+    </select>
+
+    <select id="selectNationalCount" resultType="long">
+        SELECT COUNT(*) FROM heritage WHERE level = '国家级'
+    </select>
+</mapper>
